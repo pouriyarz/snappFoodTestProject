@@ -25,7 +25,6 @@ paging-version = "3.3.5"
 glide-version = "4.16.0"
 coroutine = "1.7.3"
 mockk-version = "1.13.9"
-gms-version = "21.3.0"
 room-version = "2.6.1"
 
 
@@ -67,10 +66,6 @@ classPath-serializable = { group = "org.jetbrains.kotlin", name = "kotlin-serial
 #retrofit
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit-version" }
 okHttp-logger = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttp-version" }
-
-#map
-gms_map = {group = "com.google.android.gms", name = "play-services-maps", version.ref = "gms-version" }
-gms_location = {group = "com.google.android.gms", name = "play-services-location", version.ref = "gms-version" }
 
 #Paging
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging-version" }
