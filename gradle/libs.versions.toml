@@ -26,11 +26,16 @@ glide-version = "4.16.0"
 coroutine = "1.7.3"
 mockk-version = "1.13.9"
 room-version = "2.6.1"
-
-
+coil = "2.5.0"
+activityCompose = "1.9.0"
+bom = "2024.05.00"
+composeMaterial = "1.6.7"
+navigation = "2.7.7"
+androidxHiltNavigationCompose = "1.2.0"
 
 
 [libraries]
+activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
@@ -52,6 +57,20 @@ lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-view
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+#compose
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "bom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material = { group = "androidx.compose.material", name = "material" , version.ref = "composeMaterial"}
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-testing = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 #navigation
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav-version" }
@@ -85,6 +104,10 @@ room-runtime = {group = "androidx.room", name ="room-runtime", version.ref = "ro
 room-ktx = {group = "androidx.room", name ="room-ktx", version.ref = "room-version"}
 room-common = {group = "androidx.room", name ="room-common", version.ref = "room-version"}
 
+#coil
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -95,12 +118,23 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 navigation-safeArgs = { id = "androidx.navigation.safeargs.kotlin", version = "unspecified" }
 
-
-
-
 #CustomPlugins
 common-android-plugin = { id = "rezaie.balad.commonAndroidConfigPlugin", version = "unspecified" }
 common-hilt-plugin = { id = "rezaie.balad.androidHiltConventionPlugin", version = "unspecified" }
 common-serialization-plugin = { id = "rezaie.balad.baladKotlinSerializationPlugin", version = "unspecified" }
+
+[bundles]
+compose = [
+    "compose-ui",
+    "compose-graphics",
+    "compose-preview",
+    "compose-material",
+    "compose-navigation",
+    "compose-ui-tooling",
+    "compose-ui-testing",
+    "compose-ui-test-manifest",
+    "androidx-hilt-navigation-compose",
+    "compose-material-iconsExtended"
+]
 
 

@@ -41,9 +41,9 @@ gradlePlugin {
         }
     }
     plugins {
-        register("BaladKotlinSerializationPlugin") {
+        register("SnappFoodKotlinSerializationPlugin") {
             id = "rezaie.balad.baladKotlinSerializationPlugin"
-            implementationClass = "BaladKotlinSerializationPlugin"
+            implementationClass = "SnappFoodKotlinSerializationPlugin"
         }
     }
 }

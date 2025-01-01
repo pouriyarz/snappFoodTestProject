@@ -3,7 +3,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import utils.libs
 
-class BaladKotlinSerializationPlugin : Plugin<Project> {
+class SnappFoodKotlinSerializationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply("kotlinx-serialization")
