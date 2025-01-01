@@ -64,7 +64,8 @@ dependencies {
 
     //project
     implementation(projects.data)
-    implementation(projects.domain)
+    implementation(projects.domain.domainCore)
+    implementation(projects.domain.domainCharacteres)
     implementation(projects.core)
 
     implementation(platform(libs.compose.bom))

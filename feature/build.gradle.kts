@@ -27,5 +27,5 @@ dependencies {
     implementation(libs.navigation.ui)
 
     //project layers
-    implementation(projects.domain)
+    implementation(projects.domain.domainCharacteres)
 }
