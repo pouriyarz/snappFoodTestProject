@@ -4,12 +4,19 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -35,6 +42,7 @@ fun CharacterListScreen(
     imageLoader: ImageLoader
 ) {
     val characters = viewModel.characters.collectAsLazyPagingItems()
+    val listState = rememberLazyListState()
 
     BaseScreen(
         queue = Queue(mutableListOf()),
@@ -54,7 +62,7 @@ fun CharacterListScreen(
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
                         characters.loadState.refresh is LoadState.Loading ||
-                                characters.loadState.prepend.endOfPaginationReached.not()  -> {
+                                characters.loadState.prepend.endOfPaginationReached.not() -> {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize()
                             ) {
@@ -64,23 +72,37 @@ fun CharacterListScreen(
                             }
                         }
 
-                        // Display Characters List Once Loaded
                         characters.itemCount > 0 -> {
                             if (characters.loadState.prepend.endOfPaginationReached) {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                items(characters.itemCount) { index ->
-                                    if (characters[index] != null) {
-                                        CharacterListItem(
-                                            character = characters[index]!!,
-                                            imageLoader = imageLoader
-                                        )
+                                LazyColumn(
+                                    state = listState,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentPadding = PaddingValues(bottom = 70.dp) // Space for loading indicator
+                                ) {
+                                    items(characters.itemCount) { index ->
+                                        if (characters[index] != null) {
+                                            CharacterListItem(
+                                                character = characters[index]!!,
+                                                imageLoader = imageLoader
+                                            )
+                                        }
+                                    }
+
+                                    if (characters.loadState.append is LoadState.Loading) {
+                                        item {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(16.dp),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                CircularProgressIndicator()
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                            }
 
                         characters.loadState.refresh is LoadState.Error && characters.itemCount == 0 -> {
                             val e = characters.loadState.refresh as LoadState.Error

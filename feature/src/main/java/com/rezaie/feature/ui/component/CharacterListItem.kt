@@ -40,9 +40,9 @@ fun CharacterListItem(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(10.dp) // Outer padding
-            .clip(RoundedCornerShape(16.dp)), // Rounded corners
-        elevation = 4.dp, // Shadow to make it look elevated
+            .padding(10.dp)
+            .clip(RoundedCornerShape(16.dp)),
+        elevation = 4.dp,
         color = MaterialTheme.colors.surface
     ) {
         Row(
@@ -56,18 +56,18 @@ fun CharacterListItem(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data("https://starwars-visualguide.com/assets/img/characters/$imageId.jpg")
-                    .error(R.drawable.ic_baseline_star_24) // Fallback image if the character image is not found
-                    .placeholder(R.drawable.black_background) // Placeholder for loading state
+                    .error(R.drawable.ic_baseline_star_24)
+                    .placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
                     .build(),
                 contentDescription = character.name,
                 modifier = Modifier
-                    .size(100.dp) // Set the size of the image
-                    .clip(RoundedCornerShape(20.dp)), // Circular image
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(20.dp)),
                 contentScale = ContentScale.Crop,
                 imageLoader = imageLoader
             )
 
-            Spacer(modifier = Modifier.width(15.dp)) // Space between image and text
+            Spacer(modifier = Modifier.width(15.dp))
 
             // Column to show Name, Birth Year, Height, and Number of Films
             Column(
