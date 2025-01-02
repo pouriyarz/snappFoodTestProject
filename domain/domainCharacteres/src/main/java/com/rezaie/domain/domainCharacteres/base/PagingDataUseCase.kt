@@ -1,4 +1,4 @@
-package com.rezaie.domain.base
+package com.rezaie.domain.domainCharacteres.base
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.CoroutineDispatcher

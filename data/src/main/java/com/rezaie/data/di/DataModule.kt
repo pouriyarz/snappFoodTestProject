@@ -18,7 +18,6 @@ import okhttp3.ConnectionPool
 import okhttp3.Dispatcher
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.util.concurrent.Executors
@@ -31,9 +30,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideOkHttp(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
+    fun provideOkHttp(): OkHttpClient {
         val timeOut = 30L
         val dispatcher = Dispatcher(Executors.newFixedThreadPool(20)).apply {
             maxRequests = 20
@@ -45,7 +42,6 @@ class DataModule {
             readTimeout(timeOut, TimeUnit.SECONDS)
             writeTimeout(timeOut, TimeUnit.SECONDS)
             connectTimeout(timeOut, TimeUnit.SECONDS)
-            addNetworkInterceptor(httpLoggingInterceptor)
         }.build()
     }
 

@@ -29,24 +29,32 @@ class CharactersRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                initialLoadSize = PAGE_SIZE,
+                initialLoadSize = 9,
+                enablePlaceholders = true,
+                prefetchDistance = 0
             ),
             remoteMediator = CharactersRemoteMediator(
                 database = characterDataBase,
                 remoteDataSource = remoteDataSource,
                 localDataSource = localDataSource,
+                pagingConfig = PagingConfig(
+                    pageSize = PAGE_SIZE,
+                    initialLoadSize = 9,
+                    enablePlaceholders = true,
+                    prefetchDistance = 0
+                ),
                 dispatcher = dispatcher,
                 search = query
             )
         )
         {
-            localDataSource.getAsFlow()
+            localDataSource.getAsFlow(query)
         }.flow.map { pagingData ->
             pagingData.map { it.toCharacterEntity() }
         }
     }
 
     companion object {
-        private const val PAGE_SIZE = 10
+        private const val PAGE_SIZE = 20
     }
 }

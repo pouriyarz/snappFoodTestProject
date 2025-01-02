@@ -16,6 +16,7 @@ dependencyResolutionManagement {
         maven(url = "https://www.jitpack.io")
         maven("https://s3.amazonaws.com/repo.commonsware.com")
         jcenter()
+        maven(url = "https://maven.myket.ir")
         maven(url = "https://plugins.gradle.org/m2")
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     }
@@ -31,3 +32,4 @@ include(":feature")
 include(":core")
 include(":domain:domainCore")
 include(":domain:domainCharacteres")
+include(":components")

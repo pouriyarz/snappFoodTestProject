@@ -7,36 +7,42 @@ import kotlin.random.Random
 
 fun CharactersResponse.toCharacterEntity(): CharacterEntity {
     return CharacterEntity(
-        id = id,
+        id = id ?: Regex(".*/(\\d+)/").find(url.toString())?.groupValues?.get(1)?.toInt()
+        ?: Random.nextInt(),
         name = name,
         birthYear = birthYear,
         height = height,
         films = films,
         species = species,
-        homeWorld = homeWorld
+        homeWorld = homeWorld,
+        url = url
     )
 }
 
 fun CharactersResponse.toCharacterTable(): CharacterTable {
     return CharacterTable(
-        id = id ?: Random.nextInt(),
+        characterId = Regex(".*/(\\d+)/").find(url.toString())?.groupValues?.get(1)?.toInt()
+            ?: Random.nextInt(),
         name = name,
         height = height,
         films = films,
         birthYear = birthYear,
         species = species,
-        homeWorld = homeWorld
+        homeWorld = homeWorld,
+        url = url,
+        query = query
     )
 }
 
 fun CharacterTable.toCharacterEntity(): CharacterEntity {
     return CharacterEntity(
-        id = id,
+        id = characterId,
         name = name,
         height = height,
         films = films,
         birthYear = birthYear,
         species = species,
-        homeWorld = homeWorld
+        homeWorld = homeWorld,
+        url = url
     )
 }

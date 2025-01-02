@@ -17,9 +17,18 @@ interface CharacterDao : BaseDao<CharacterTable> {
     @Query("SELECT * FROM CharacterTable")
     fun getAsFlow(): PagingSource<Int, CharacterTable>
 
+    @Query("SELECT * FROM CharacterTable WHERE `query` = :query")
+    fun getCharactersByQuery(query: String): PagingSource<Int, CharacterTable>
+
     @Query("DELETE FROM CharacterTable")
     suspend fun deleteAll()
 
     @Delete
     override suspend fun delete(entity: CharacterTable)
+
+    @Query("DELETE FROM CharacterTable WHERE `query` = :query")
+    suspend fun deleteByQuery(query: String)
+
+    @Query("SELECT COUNT(characterId) FROM CharacterTable WHERE `query` = :query")
+    suspend fun getCharactersCount(query: String): Int
 }

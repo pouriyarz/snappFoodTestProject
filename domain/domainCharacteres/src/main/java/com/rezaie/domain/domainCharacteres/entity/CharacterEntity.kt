@@ -8,12 +8,14 @@ data class CharacterEntity(
     private val species: List<String>?,
     private val homeWorld: String?,
     private val films: List<String>?,
+    private val url: String?
 ) {
-    fun getId() = id
-    fun getName() = name
-    fun getBirthYear() = birthYear
-    fun getHeight() = height
+    fun getId() = id ?: 0
+    fun getName() = name ?: ""
+    fun getBirthYear() = birthYear ?: ""
+    fun getHeight() = height ?: ""
     fun getSpecies() = species
-    fun getHomeWorld() = homeWorld
+    fun getHomeWorld() = homeWorld ?: ""
     fun getFilms() = films
+    fun getUrl() = url
 }

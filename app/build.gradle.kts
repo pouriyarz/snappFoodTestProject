@@ -64,6 +64,7 @@ dependencies {
 
     //project
     implementation(projects.data)
+    implementation(projects.feature)
     implementation(projects.domain.domainCore)
     implementation(projects.domain.domainCharacteres)
     implementation(projects.core)

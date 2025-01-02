@@ -9,9 +9,11 @@ import androidx.room.TypeConverters
     tableName = "CharacterTable"
 )
 data class CharacterTable(
-    @ColumnInfo(name = "characterId")
     @PrimaryKey(autoGenerate = false)
-    val id: Int,
+    @ColumnInfo(name = "characterId")
+    val characterId: Int,
+    @ColumnInfo(name = "id")
+    val id: Int = 0,
     val name: String?,
     @ColumnInfo(name = "birthYear")
     val birthYear: String?,
@@ -22,5 +24,9 @@ data class CharacterTable(
     @ColumnInfo(name = "homeWorld")
     val homeWorld: String?,
     @ColumnInfo(name = "films")
-    @TypeConverters val films: List<String>?
+    @TypeConverters val films: List<String>?,
+    @ColumnInfo(name = "url")
+    val url: String?,
+    @ColumnInfo(name = "query")
+    val query: String?
 )

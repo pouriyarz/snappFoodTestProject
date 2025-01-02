@@ -1,5 +1,6 @@
 package com.rezaie.data.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingConfig
@@ -22,11 +23,11 @@ class CharactersRemoteMediator(
     private val database: CharacterDataBase,
     private val remoteDataSource: RemoteCharactersDataSource,
     private val localDataSource: LocalCharactersDataSource,
+    private val pagingConfig: PagingConfig,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    val search: String,
+    private val search: String,
 ) : RemoteMediator<Int, CharacterTable>() {
 
-    var data: String? = null
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, CharacterTable>
@@ -34,33 +35,31 @@ class CharactersRemoteMediator(
         return try {
             return withContext(dispatcher) {
                 val loadKey: Int = when (loadType) {
-                    LoadType.REFRESH -> {
-                        myCurrentPage = 0
-                        0
-                    }
+                    LoadType.REFRESH -> 0
 
                     LoadType.PREPEND -> return@withContext MediatorResult.Success(
                         endOfPaginationReached = true
                     )
 
                     LoadType.APPEND -> {
-                        myCurrentPage
+                        localDataSource
+                            .getCharactersCount(search) / pagingConfig.pageSize
                     }
                 }
 
                 val response =
                     remoteDataSource.getCharacters(
                         search = search,
-                        page = data,
+                        page = (loadKey + 1).toString(),
                     )
 
-                data = response.next
-
-                myCurrentPage = myCurrentPage.plus(1)
 
                 database.withTransaction {
+                    if (loadType == LoadType.REFRESH) {
+                        localDataSource.deleteByQuery(query = search)
+                    }
                     localDataSource.save(
-                        response.results?.map { it.toCharacterTable() }.orEmpty()
+                        response.results?.map { it.toCharacterTable().copy(query = search) }.orEmpty()
                     )
                 }
                 MediatorResult.Success(endOfPaginationReached = response.next == null)
@@ -73,9 +72,5 @@ class CharactersRemoteMediator(
         } catch (e: Exception) {
             MediatorResult.Error(e)
         }
-    }
-
-    companion object {
-        var myCurrentPage = 0
     }
 }

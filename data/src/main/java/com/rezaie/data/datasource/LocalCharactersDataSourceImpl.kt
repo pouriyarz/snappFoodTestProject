@@ -8,8 +8,8 @@ import javax.inject.Inject
 class LocalCharactersDataSourceImpl @Inject constructor(
     private val characterDao: CharacterDao,
 ) : LocalCharactersDataSource {
-    override fun getAsFlow(): PagingSource<Int, CharacterTable> {
-        return characterDao.getAsFlow()
+    override fun getAsFlow(query: String): PagingSource<Int, CharacterTable> {
+        return characterDao.getCharactersByQuery(query)
     }
 
     override suspend fun save(list: List<CharacterTable>) {
@@ -18,5 +18,13 @@ class LocalCharactersDataSourceImpl @Inject constructor(
 
     override suspend fun delete() {
         characterDao.deleteAll()
+    }
+
+    override suspend fun deleteByQuery(query: String) {
+        characterDao.deleteByQuery(query)
+    }
+
+    override suspend fun getCharactersCount(query: String): Int {
+        return characterDao.getCharactersCount(query)
     }
 }

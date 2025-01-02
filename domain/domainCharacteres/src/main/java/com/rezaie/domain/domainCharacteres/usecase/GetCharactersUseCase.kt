@@ -2,7 +2,7 @@ package com.rezaie.domain.domainCharacteres.usecase
 
 import androidx.paging.PagingData
 import com.rezaie.core.IoDispatcher
-import com.rezaie.domain.base.PagingDataUseCase
+import com.rezaie.domain.domainCharacteres.base.PagingDataUseCase
 import com.rezaie.domain.domainCharacteres.entity.CharacterEntity
 import com.rezaie.domain.domainCharacteres.repository.CharacterRepository
 import kotlinx.coroutines.CoroutineDispatcher
