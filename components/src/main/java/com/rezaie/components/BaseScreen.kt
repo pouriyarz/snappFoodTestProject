@@ -16,9 +16,7 @@ import com.rezaie.domain.domainCore.UIComponent
 
 @Composable
 fun BaseScreen(
-    queue: Queue<UIComponent> = Queue(mutableListOf()), //Dialogs
-    progressBarState: ProgressBarState = ProgressBarState.Idle,
-    content: @Composable () -> Unit,// The content of the UI.
+    content: @Composable () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
     Scaffold(
@@ -31,19 +29,6 @@ fun BaseScreen(
                 .background(MaterialTheme.colors.background)
         ) {
             content()
-            // process the queue
-            if (!queue.isEmpty()) {
-                queue.peek()?.let { uiComponent ->
-                    if (uiComponent is UIComponent.Dialog) {
-                        GenericDialog(
-                            modifier = Modifier
-                                .fillMaxWidth(0.9f),
-                            title = uiComponent.title,
-                            description = uiComponent.description,
-                        )
-                    }
-                }
-            }
         }
     }
 }

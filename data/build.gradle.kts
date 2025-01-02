@@ -22,6 +22,7 @@ dependencies {
 
     implementation(projects.domain.domainCharacteres)
     implementation(projects.core)
+    implementation(projects.components)
 
     //retrofit
     implementation(libs.retrofit)

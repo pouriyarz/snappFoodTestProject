@@ -1,5 +1,9 @@
 package com.rezaie.feature
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -12,14 +16,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -27,10 +35,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.ImageLoader
 import com.rezaie.components.BaseScreen
 import com.rezaie.components.LoadingShimmerMovieItem
-import com.rezaie.core.constants.Queue
-import com.rezaie.domain.domainCore.ProgressBarState
+import com.rezaie.feature.presentation.CharacterView
+import com.rezaie.feature.state.CharacterListEvents
 import com.rezaie.feature.ui.component.CharacterListItem
 import com.rezaie.feature.ui.component.CharacterListToolbar
+import com.rezaie.components.R as componentsR
 
 
 @ExperimentalFoundationApi
@@ -39,15 +48,21 @@ import com.rezaie.feature.ui.component.CharacterListToolbar
 @Composable
 fun CharacterListScreen(
     viewModel: CharacterListViewModel = hiltViewModel(),
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
+    onCharacterClick: (CharacterView) -> Unit
 ) {
     val characters = viewModel.characters.collectAsLazyPagingItems()
-    val listState = rememberLazyListState()
 
-    BaseScreen(
-        queue = Queue(mutableListOf()),
-        progressBarState = ProgressBarState.Idle
-    ) {
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+
+    BackHandler(enabled = searchQuery.isNotEmpty()) {
+        if (searchQuery.isNotEmpty()) {
+            searchQuery = ""
+            viewModel.onTriggerEvent(CharacterListEvents.UpdateQuery(""))
+        }
+    }
+
+    BaseScreen {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -56,13 +71,14 @@ fun CharacterListScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 CharacterListToolbar(onTextChange = { query ->
-                    viewModel.updateQuery(query)
-                })
+                    searchQuery = query
+                    viewModel.onTriggerEvent(CharacterListEvents.UpdateQuery(query))
+                }, query = searchQuery)
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
                         characters.loadState.refresh is LoadState.Loading ||
-                                characters.loadState.prepend.endOfPaginationReached.not() -> {
+                                (characters.loadState.prepend.endOfPaginationReached.not() && characters.loadState.refresh !is LoadState.Error) -> {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize()
                             ) {
@@ -72,18 +88,25 @@ fun CharacterListScreen(
                             }
                         }
 
+                        characters.loadState.refresh is LoadState.Error &&
+                                characters.itemCount == 0 && characters.loadState.source.append.endOfPaginationReached-> {
+                            ErrorItem(
+                                onRetry = { characters.retry() }
+                            )
+                        }
+
                         characters.itemCount > 0 -> {
-                            if (characters.loadState.prepend.endOfPaginationReached) {
+                            if (characters.loadState.prepend.endOfPaginationReached || characters.loadState.refresh is LoadState.Error) {
                                 LazyColumn(
-                                    state = listState,
                                     modifier = Modifier.fillMaxSize(),
-                                    contentPadding = PaddingValues(bottom = 70.dp) // Space for loading indicator
+                                    contentPadding = PaddingValues(bottom = 70.dp)
                                 ) {
                                     items(characters.itemCount) { index ->
                                         if (characters[index] != null) {
                                             CharacterListItem(
                                                 character = characters[index]!!,
-                                                imageLoader = imageLoader
+                                                imageLoader = imageLoader,
+                                                onClick = onCharacterClick
                                             )
                                         }
                                     }
@@ -104,12 +127,20 @@ fun CharacterListScreen(
                             }
                         }
 
-                        characters.loadState.refresh is LoadState.Error && characters.itemCount == 0 -> {
-                            val e = characters.loadState.refresh as LoadState.Error
-                            ErrorItem(
-                                error = e.error,
-                                onRetry = { characters.retry() }
-                            )
+                        characters.itemCount == 0 && searchQuery.isNotEmpty() && characters.loadState.prepend.endOfPaginationReached -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = stringResource(componentsR.string.no_character_found),
+                                    style = MaterialTheme.typography.h6,
+                                    modifier = Modifier.padding(16.dp),
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                         }
                     }
                 }
@@ -118,19 +149,17 @@ fun CharacterListScreen(
     }
 }
 
-
 @Composable
 fun ErrorItem(
-    error: Throwable,
     onRetry: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Error: ${error.localizedMessage}")
+        Text(text = stringResource(componentsR.string.error))
         Button(onClick = onRetry) {
-            Text(text = "Retry")
+            Text(text = stringResource(componentsR.string.retry))
         }
     }
 }

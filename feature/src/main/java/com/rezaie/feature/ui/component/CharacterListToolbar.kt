@@ -1,28 +1,43 @@
 package com.rezaie.feature.ui.component
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.*
+import com.rezaie.components.R as componentsR
 
 @Composable
-@Preview
-fun CharacterListToolbar(onTextChange: (String) -> Unit = {}) {
-    var searchText by remember { mutableStateOf("") }
+fun CharacterListToolbar(
+    onTextChange: (String) -> Unit = {},
+    query: String
+) {
+
+    LaunchedEffect(query) {
+        onTextChange(query)
+    }
 
     Surface(
         modifier = Modifier
@@ -39,10 +54,14 @@ fun CharacterListToolbar(onTextChange: (String) -> Unit = {}) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp)
-                    .border(1.5.dp, Color(0xFF6573B9), shape = RoundedCornerShape(12.dp)),
+                    .border(
+                        0.dp,
+                        MaterialTheme.colors.onBackground.copy(alpha = .5f),
+                        shape = RoundedCornerShape(12.dp)
+                    ),
                 elevation = 0.dp,
                 shape = RoundedCornerShape(12.dp),
-                backgroundColor = Color(0x549FA4C2),
+                backgroundColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
             ) {
                 Row(
                     horizontalArrangement = Arrangement.Start,
@@ -50,19 +69,20 @@ fun CharacterListToolbar(onTextChange: (String) -> Unit = {}) {
                 ) {
                     Icon(
                         Icons.Default.Search,
-                        contentDescription = "Search",
-                        tint = Color.Black,
-                        modifier = Modifier.padding(start = 18.dp).size(30.dp),
+                        contentDescription = stringResource(componentsR.string.search),
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .padding(start = 18.dp)
+                            .size(25.dp),
                     )
                     TextField(
-                        value = searchText,
+                        value = query,
                         onValueChange = {
-                            searchText = it
                             onTextChange(it)
                         },
                         placeholder = {
                             Text(
-                                text = "Search",
+                                text = stringResource(componentsR.string.search),
                                 style = MaterialTheme.typography.button.merge(
                                     TextStyle(fontWeight = FontWeight.Normal, fontSize = 16.sp)
                                 ),
@@ -74,13 +94,12 @@ fun CharacterListToolbar(onTextChange: (String) -> Unit = {}) {
                         ),
                         colors = TextFieldDefaults.textFieldColors(
                             backgroundColor = Color.Transparent,
-                            cursorColor = Color.Black,
+                            cursorColor = MaterialTheme.colors.onBackground,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent
                         ),
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 8.dp),
+                            .fillMaxWidth(),
                         singleLine = true
                     )
                 }
@@ -88,5 +107,6 @@ fun CharacterListToolbar(onTextChange: (String) -> Unit = {}) {
         }
     }
 }
+
 
 

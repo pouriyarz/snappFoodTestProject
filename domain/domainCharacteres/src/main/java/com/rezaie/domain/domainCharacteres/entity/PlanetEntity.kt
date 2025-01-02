@@ -1,13 +1,9 @@
 package com.rezaie.domain.domainCharacteres.entity
 
 data class PlanetEntity(
-    private var characterId: String,
-    private val id: Int,
-    private val url: String,
-    private val population: String
+    private val id: Int?,
+    private val population: String?
 ) {
-    fun getCharacterId() = characterId
-    fun getId() = id
-    fun getUrl() = url
-    fun getPopulation() = population
+    fun getId() = id ?: 0
+    fun getPopulation() = population ?: ""
 }

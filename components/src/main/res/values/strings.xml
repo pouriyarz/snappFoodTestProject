@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="films">Films</string>
+    <string name="centi_meteres">cm</string>
+    <string name="height">Height</string>
+    <string name="population">Home World Population</string>
+    <string name="language">Language</string>
+    <string name="search">Search</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="no_character_found">No characters found!</string>
+</resources>

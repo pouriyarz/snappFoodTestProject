@@ -1,6 +1,5 @@
 package com.rezaie.data.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingConfig
@@ -58,7 +57,7 @@ class CharactersRemoteMediator(
                     if (loadType == LoadType.REFRESH) {
                         localDataSource.deleteByQuery(query = search)
                     }
-                    localDataSource.save(
+                    localDataSource.saveCharacters(
                         response.results?.map { it.toCharacterTable().copy(query = search) }.orEmpty()
                     )
                 }

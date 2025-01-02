@@ -32,6 +32,7 @@ bom = "2024.05.00"
 composeMaterial = "1.6.7"
 navigation = "2.7.7"
 androidxHiltNavigationCompose = "1.2.0"
+uiAndroid = "1.6.7"
 
 
 [libraries]
@@ -107,6 +108,7 @@ room-common = {group = "androidx.room", name ="room-common", version.ref = "room
 #coil
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 
 
 [plugins]

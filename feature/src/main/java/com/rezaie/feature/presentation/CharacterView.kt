@@ -1,5 +1,8 @@
 package com.rezaie.feature.presentation
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CharacterView(
     val id: Int,
     val name: String,

@@ -19,14 +19,14 @@ data class CharacterTable(
     val birthYear: String?,
     @ColumnInfo(name = "height")
     val height: String?,
-    @ColumnInfo(name = "species")
-    @TypeConverters val species: List<String>?,
-    @ColumnInfo(name = "homeWorld")
-    val homeWorld: String?,
-    @ColumnInfo(name = "films")
-    @TypeConverters val films: List<String>?,
+    @ColumnInfo(name = "speciesData")
+    @TypeConverters val species: List<String>? = null,
+    @ColumnInfo(name = "planet")
+    val homeWorld: String? = null,
+    @ColumnInfo(name = "filmsData")
+    @TypeConverters val films: List<String>? = null,
     @ColumnInfo(name = "url")
     val url: String?,
     @ColumnInfo(name = "query")
-    val query: String?
+    val query: String? = ""
 )

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.common.android.plugin)
     alias(libs.plugins.common.hilt.plugin)
     id(libs.plugins.navigation.safeArgs.get().pluginId)
+    alias(libs.plugins.common.serialization.plugin)
 }
 
 android {
@@ -11,6 +12,11 @@ android {
 
     buildFeatures {
         compose = true
+    }
+    android.buildFeatures.buildConfig = true
+
+    defaultConfig {
+        buildConfigField("String", "BASE_URL_IMAGE", "\"https://starwars-visualguide.com/assets/img/characters/\"")
     }
 
     composeOptions {
@@ -26,6 +32,7 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.fragment)
+    implementation(libs.androidx.ui.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

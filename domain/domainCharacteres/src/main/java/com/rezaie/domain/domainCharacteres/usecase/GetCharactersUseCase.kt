@@ -1,5 +1,6 @@
 package com.rezaie.domain.domainCharacteres.usecase
 
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.rezaie.core.IoDispatcher
 import com.rezaie.domain.domainCharacteres.base.PagingDataUseCase
@@ -15,8 +16,8 @@ class GetCharactersUseCase @Inject constructor(
 ) : PagingDataUseCase<GetCharactersUseCase.Params, CharacterEntity>(dispatcher) {
 
     override fun execute(input: Params): Flow<PagingData<CharacterEntity>> {
-        return characterRepository.getCharacters(input.query)
+        return characterRepository.getCharacters(input.query, pagingConfig = input.pagingConfig)
     }
 
-    data class Params(val query: String)
+    data class Params(val query: String, val pagingConfig: PagingConfig)
 }

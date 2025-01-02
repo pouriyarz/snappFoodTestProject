@@ -10,4 +10,11 @@ sealed class Screen(val route: String, val arguments: List<NamedNavArgument>){
         route = "characterList",
         arguments = emptyList()
     )
+
+    data object CharacterDetail: Screen(
+        route = "characterDetail",
+        arguments = listOf(navArgument("characterView") {
+            type = NavType.StringType
+        })
+    )
 }

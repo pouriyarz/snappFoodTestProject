@@ -1,20 +1,13 @@
 package com.rezaie.snappfoodtestproject
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.material.Text
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -22,17 +15,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.ImageLoader
-import com.rezaie.feature.CharacterListViewModel
+import com.rezaie.feature.CharacterDetailScreen
+import com.rezaie.feature.CharacterDetailViewModel
 import com.rezaie.feature.CharacterListScreen
+import com.rezaie.feature.CharacterListViewModel
+import com.rezaie.feature.presentation.CharacterView
 import com.rezaie.snappfoodtestproject.ui.navigation.Screen
 import com.rezaie.snappfoodtestproject.ui.theme.BaseTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
 @ExperimentalComposeUiApi
-@ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -48,10 +45,12 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = Screen.CharacterList.route,
                         builder = {
-                            addMovieList(
+                            addCharacterList(
                                 navController = navController,
-                                imageLoader = imageLoader,
-                                width = constraints.maxWidth / 2,
+                                imageLoader = imageLoader
+                            )
+                            addCharacterDetail(
+                                imageLoader = imageLoader
                             )
                         }
                     )
@@ -60,40 +59,45 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalAnimationApi::class)
     @ExperimentalFoundationApi
-    @ExperimentalComposeUiApi
-    @ExperimentalAnimationApi
-    fun NavGraphBuilder.addMovieList(
+    fun NavGraphBuilder.addCharacterList(
         navController: NavController,
-        imageLoader: ImageLoader,
-        width: Int,
+        imageLoader: ImageLoader
     ) {
         composable(
-            route = Screen.CharacterList.route,
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { -width },
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = FastOutSlowInEasing
-                    )
-                ) + fadeOut(animationSpec = tween(300))
-            },
-            popEnterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { -width },
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = FastOutSlowInEasing
-                    )
-                ) + fadeIn(animationSpec = tween(300))
-            },
-        ){
+            route = Screen.CharacterList.route
+        ) {
             val viewModel: CharacterListViewModel = hiltViewModel()
             CharacterListScreen(
                 viewModel = viewModel,
                 imageLoader = imageLoader,
+                onCharacterClick = { selectedCharacter ->
+                    val characterView = Uri.encode(Json.encodeToString(selectedCharacter))
+                    navController.navigate(Screen.CharacterDetail.route + "/$characterView")
+                }
             )
+        }
+    }
+
+    private fun NavGraphBuilder.addCharacterDetail(
+        imageLoader: ImageLoader
+    ) {
+        composable(
+            route = Screen.CharacterDetail.route + "/{characterView}",
+            arguments = Screen.CharacterDetail.arguments
+        ) { backStackEntry ->
+            val characterJson = backStackEntry.arguments?.getString("characterView")
+            val characterView = characterJson?.let { Json.decodeFromString<CharacterView>(it) }
+
+            val viewModel: CharacterDetailViewModel = hiltViewModel()
+            if (characterView != null) {
+                CharacterDetailScreen(
+                    characterView = characterView,
+                    viewModel = viewModel,
+                    imageLoader = imageLoader
+                )
+            }
         }
     }
 }
