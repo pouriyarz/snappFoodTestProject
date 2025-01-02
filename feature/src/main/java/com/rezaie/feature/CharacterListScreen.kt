@@ -54,8 +54,7 @@ fun CharacterListScreen(
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
                         characters.loadState.refresh is LoadState.Loading ||
-                                characters.loadState.prepend.endOfPaginationReached.not() ||
-                                characters.loadState.append is LoadState.Loading -> {
+                                characters.loadState.prepend.endOfPaginationReached.not()  -> {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize()
                             ) {
@@ -67,23 +66,21 @@ fun CharacterListScreen(
 
                         // Display Characters List Once Loaded
                         characters.itemCount > 0 -> {
-                            if (characters.loadState.prepend.endOfPaginationReached &&
-                                characters.loadState.append is LoadState.NotLoading
+                            if (characters.loadState.prepend.endOfPaginationReached) {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize()
                             ) {
-                                LazyColumn(
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
-                                    items(characters.itemCount) { index ->
-                                        if (characters[index] != null) {
-                                            CharacterListItem(
-                                                character = characters[index]!!,
-                                                imageLoader = imageLoader
-                                            )
-                                        }
+                                items(characters.itemCount) { index ->
+                                    if (characters[index] != null) {
+                                        CharacterListItem(
+                                            character = characters[index]!!,
+                                            imageLoader = imageLoader
+                                        )
                                     }
                                 }
                             }
                         }
+                            }
 
                         characters.loadState.refresh is LoadState.Error && characters.itemCount == 0 -> {
                             val e = characters.loadState.refresh as LoadState.Error

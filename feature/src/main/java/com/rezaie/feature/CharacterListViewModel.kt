@@ -51,28 +51,18 @@ constructor(
         _query.value = newQuery
     }
 
+    private var searchJob: Job? = null
     private fun setupSearch() {
-        viewModelScope.launch {
-            query.debounce(300).distinctUntilChanged().flatMapLatest { searchQuery ->
-                searchJob?.cancel()
-                        getCharactersUseCase(GetCharactersUseCase.Params(searchQuery))
-                            .cachedIn(viewModelScope)
-                            .map { pagingData -> pagingData.map { it.toCharacterView() } }
-                }
-                .collect { pagingData ->
-                    _characters.value = pagingData
-                }
-        }
-    }
-
-    private var searchJob: Job?=null
-    private fun fetchCharacters(query: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            getCharactersUseCase(GetCharactersUseCase.Params(query))
-                .cachedIn(viewModelScope)
+            query.debounce(300).distinctUntilChanged().flatMapLatest { searchQuery ->
+                _characters.value = PagingData.empty()
+                getCharactersUseCase(GetCharactersUseCase.Params(searchQuery))
+                    .cachedIn(viewModelScope)
+                    .map { pagingData -> pagingData.map { it.toCharacterView() } }
+            }
                 .collect { pagingData ->
-                    _characters.value = pagingData.map { it.toCharacterView() }
+                    _characters.value = pagingData
                 }
         }
     }
@@ -80,14 +70,12 @@ constructor(
     fun onTriggerEvent(event: CharacterListEvents) {
         when (event) {
             is CharacterListEvents.GetCharacters -> {
-                fetchCharacters(event.query)
             }
         }
     }
 
 
     init {
-//        onTriggerEvent(CharacterListEvents.GetCharacters(""))
         setupSearch()
     }
 }
