@@ -76,7 +76,7 @@ Unit tests are implemented using JUnit, MockK, and Kotlin Coroutines. The key us
 ## Future Improvements
 
 - Implement additional UI/UX enhancements to further refine the user experience.
-- Add unit tests and UI tests to ensure robustness and reliability.
+- Add unit tests to ensure robustness and reliability.
 - Optimize performance for large datasets and high concurrency scenarios.
 
 
