@@ -70,35 +70,3 @@ fun CharacterView.toCharacterEntity(): CharacterEntity =
         homeWorld = homeWorld,
         url = url
     )
-
-fun FilmView.toFilmsEntity(): FilmsEntity =
-    FilmsEntity(
-        id = id,
-        name = name,
-        description = openingCrawl
-    )
-
-fun PlanetView.toPlanetEntity(): PlanetEntity =
-    PlanetEntity(
-        id = id,
-        population = population
-    )
-
-fun SpeciesView.toSpeciesEntity(): SpeciesEntity =
-    SpeciesEntity(
-        id = id,
-        name = name,
-        language = language
-    )
-
-fun CharacterDetailView.toCharacterDetailEntity(): CharacterDetailEntity =
-    CharacterDetailEntity(
-        id = id,
-        name = name,
-        birthYear = birthYear,
-        height = height,
-        films = films.map { it.toFilmsEntity() },
-        species = species.map { it.toSpeciesEntity() },
-        homeWorld = homeWorld?.toPlanetEntity(),
-        url = url
-    )

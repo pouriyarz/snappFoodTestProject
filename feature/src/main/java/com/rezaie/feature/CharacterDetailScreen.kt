@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,7 +46,6 @@ import coil.request.ImageRequest
 import com.rezaie.components.BaseScreen
 import com.rezaie.components.extenssions.getIdFromUrl
 import com.rezaie.components.extenssions.replaceNewlinesWithSpace
-import com.rezaie.domain.domainCharacteres.base.getData
 import com.rezaie.feature.presentation.CharacterView
 import com.rezaie.components.R as componentsR
 
@@ -70,7 +68,7 @@ fun CharacterDetailScreen(
     }
 
     LaunchedEffect(characterView) {
-       viewModel.getCharacterDetail(characterView)
+        viewModel.getCharacterDetail(characterView)
     }
     BaseScreen {
         Surface(
@@ -86,41 +84,91 @@ fun CharacterDetailScreen(
                     .fillMaxSize(),
             ) {
 
-                    // Image
-                    val imageId = characterView.url?.getIdFromUrl()
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data("${BuildConfig.BASE_URL_IMAGE}$imageId.jpg")
-                            .error(R.drawable.ic_baseline_star_24)
-                            .placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
-                            .build(),
-                        contentDescription = characterView.name,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 50.dp, end = 50.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .height(350.dp),
-                        contentScale = ContentScale.FillBounds,
-                        imageLoader = imageLoader
-                    )
+                // Image
+                val imageId = characterView.url?.getIdFromUrl()
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("${BuildConfig.BASE_URL_IMAGE}$imageId.jpg")
+                        .error(R.drawable.ic_star_wars)
+                        .placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
+                        .build(),
+                    contentDescription = characterView.name,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 50.dp, end = 50.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .height(350.dp),
+                    contentScale = ContentScale.FillBounds,
+                    imageLoader = imageLoader
+                )
 
 
-                    Text(
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .align(Alignment.Start),
-                        text = characterDetail.value?.name.toString(),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Bold),
-                    )
+                Text(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .align(Alignment.Start),
+                    text = characterDetail.value?.name.toString(),
+                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Bold),
+                )
 
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                            .horizontalScroll(rememberScrollState())
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .horizontalScroll(rememberScrollState())
+                ) {
+
+
+                    Card(
+                        elevation = 0.dp,
+                        shape = RoundedCornerShape(25.dp),
+                        backgroundColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
                     ) {
+                        Row(
+                            modifier = Modifier.padding(all = 12.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
 
+                            Text(
+                                modifier = Modifier.padding(start = 4.dp),
+                                text = "Born: ${characterDetail.value?.birthYear.toString()}",
+                                style = MaterialTheme.typography.subtitle1,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Card(
+                        elevation = 0.dp,
+                        shape = RoundedCornerShape(25.dp),
+                        backgroundColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
+
+                        ) {
+                        Row(
+                            modifier = Modifier.padding(all = 12.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            Text(
+                                modifier = Modifier.padding(start = 4.dp),
+                                text = "${characterView.height}${stringResource(componentsR.string.centi_meteres)} ${
+                                    stringResource(
+                                        componentsR.string.height
+                                    )
+                                }",
+                                style = MaterialTheme.typography.subtitle1,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                    }
+
+                    characterDetail.value?.homeWorld?.let {
+                        Spacer(modifier = Modifier.width(8.dp))
 
                         Card(
                             elevation = 0.dp,
@@ -135,181 +183,131 @@ fun CharacterDetailScreen(
 
                                 Text(
                                     modifier = Modifier.padding(start = 4.dp),
-                                    text = "Born: ${characterDetail.value?.birthYear.toString()}",
+                                    text = "${stringResource(componentsR.string.population)}: ${it.population}",
                                     style = MaterialTheme.typography.subtitle1,
                                     color = MaterialTheme.colors.onBackground
                                 )
                             }
                         }
+                    }
+
+                    // Species Section
+                    if (characterDetail.value?.species?.isNotEmpty() == true) {
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        Card(
-                            elevation = 0.dp,
-                            shape = RoundedCornerShape(25.dp),
-                            backgroundColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            characterDetail.value?.species?.forEach { species ->
+                                Card(
+                                    elevation = 0.dp,
+                                    shape = RoundedCornerShape(25.dp),
+                                    backgroundColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
 
-                            ) {
+                                    ) {
+                                    Row(
+                                        modifier = Modifier.padding(all = 12.dp),
+                                        horizontalArrangement = Arrangement.Center,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+
+                                        Text(
+                                            modifier = Modifier.padding(start = 4.dp),
+                                            text = "${stringResource(componentsR.string.language)}: ${
+                                                characterDetail.value?.species?.get(
+                                                    0
+                                                )?.language.toString()
+                                            }",
+                                            style = MaterialTheme.typography.subtitle1,
+                                            color = MaterialTheme.colors.onBackground
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Films Section
+                if (characterDetail.value?.films?.isNotEmpty() == true) {
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = stringResource(componentsR.string.films),
+                        style = MaterialTheme.typography.h4,
+                        modifier = Modifier.padding(bottom = 8.dp, top = 8.dp)
+                    )
+
+                    val expandedFilmIndices =
+                        remember { mutableStateListOf<Int>() }
+
+                    characterDetail.value?.films?.forEachIndexed { index, film ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp)
+                                .clickable {
+                                    if (expandedFilmIndices.contains(index)) {
+                                        expandedFilmIndices.remove(index)
+                                    } else {
+                                        expandedFilmIndices.add(index)
+                                    }
+                                }
+                                .background(
+                                    if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
+                                    RoundedCornerShape(12.dp)
+                                )
+                                .padding(16.dp)
+                        ) {
                             Row(
-                                modifier = Modifier.padding(all = 12.dp),
-                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween, // Align elements at both ends
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-
                                 Text(
-                                    modifier = Modifier.padding(start = 4.dp),
-                                    text = "${characterView.height}${stringResource(componentsR.string.centi_meteres)} ${
-                                        stringResource(
-                                            componentsR.string.height
-                                        )
-                                    }",
+                                    text = film.name,
                                     style = MaterialTheme.typography.subtitle1,
-                                    color = MaterialTheme.colors.onBackground
+                                    color = MaterialTheme.colors.onBackground,
+                                    modifier = Modifier.padding(
+                                        bottom = if (expandedFilmIndices.contains(index)) 8.dp else 0.dp
+                                    )
+                                )
+
+                                Icon(
+                                    imageVector = if (expandedFilmIndices.contains(index)) {
+                                        Icons.Default.ArrowDropUp
+                                    } else {
+                                        Icons.Default.ArrowDropDown
+                                    },
+                                    contentDescription = "Expand/Collapse",
+                                    tint = MaterialTheme.colors.onBackground,
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                        .clickable {
+                                            if (expandedFilmIndices.contains(index)) {
+                                                expandedFilmIndices.remove(index)
+                                            } else {
+                                                expandedFilmIndices.add(index)
+                                            }
+                                        }
+                                )
+                            }
+
+                            if (expandedFilmIndices.contains(index)) {
+                                Text(
+                                    text = film.openingCrawl.replaceNewlinesWithSpace(),
+                                    style = MaterialTheme.typography.subtitle2,
+                                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.8f),
+                                    modifier = Modifier.padding(top = 8.dp)
                                 )
                             }
                         }
-
-                        characterDetail.value?.homeWorld?.let {
-                            Spacer(modifier = Modifier.width(8.dp))
-
-                            Card(
-                                elevation = 0.dp,
-                                shape = RoundedCornerShape(25.dp),
-                                backgroundColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(all = 12.dp),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-
-                                    Text(
-                                        modifier = Modifier.padding(start = 4.dp),
-                                        text = "${stringResource(componentsR.string.population)}: ${it.population}",
-                                        style = MaterialTheme.typography.subtitle1,
-                                        color = MaterialTheme.colors.onBackground
-                                    )
-                                }
-                            }
-                        }
-
-                        // Species Section
-                        if (characterDetail.value?.species?.isNotEmpty() == true) {
-
-                            Spacer(modifier = Modifier.width(8.dp))
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                characterDetail.value?.species?.forEach { species ->
-                                    Card(
-                                        elevation = 0.dp,
-                                        shape = RoundedCornerShape(25.dp),
-                                        backgroundColor = if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
-
-                                        ) {
-                                        Row(
-                                            modifier = Modifier.padding(all = 12.dp),
-                                            horizontalArrangement = Arrangement.Center,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-
-                                            Text(
-                                                modifier = Modifier.padding(start = 4.dp),
-                                                text = "${stringResource(componentsR.string.language)}: ${
-                                                    characterDetail.value?.species?.get(
-                                                        0
-                                                    )?.language.toString()
-                                                }",
-                                                style = MaterialTheme.typography.subtitle1,
-                                                color = MaterialTheme.colors.onBackground
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
 
-                    // Films Section
-                    if (characterDetail.value?.films?.isNotEmpty() == true) {
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(
-                            text = stringResource(componentsR.string.films),
-                            style = MaterialTheme.typography.h4,
-                            modifier = Modifier.padding(bottom = 8.dp, top = 8.dp)
-                        )
-
-                        val expandedFilmIndices =
-                            remember { mutableStateListOf<Int>() }
-
-                        characterDetail.value?.films?.forEachIndexed { index, film ->
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 8.dp)
-                                    .clickable {
-                                        if (expandedFilmIndices.contains(index)) {
-                                            expandedFilmIndices.remove(index)
-                                        } else {
-                                            expandedFilmIndices.add(index)
-                                        }
-                                    }
-                                    .background(
-                                        if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray,
-                                        RoundedCornerShape(12.dp)
-                                    )
-                                    .padding(16.dp)
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween, // Align elements at both ends
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = film.name,
-                                        style = MaterialTheme.typography.subtitle1,
-                                        color = MaterialTheme.colors.onBackground,
-                                        modifier = Modifier.padding(
-                                            bottom = if (expandedFilmIndices.contains(index)) 8.dp else 0.dp
-                                        )
-                                    )
-
-                                    Icon(
-                                        imageVector = if (expandedFilmIndices.contains(index)) {
-                                            Icons.Default.ArrowDropUp
-                                        } else {
-                                            Icons.Default.ArrowDropDown
-                                        },
-                                        contentDescription = "Expand/Collapse",
-                                        tint = MaterialTheme.colors.onBackground,
-                                        modifier = Modifier
-                                            .padding(start = 8.dp)
-                                            .clickable {
-                                                if (expandedFilmIndices.contains(index)) {
-                                                    expandedFilmIndices.remove(index)
-                                                } else {
-                                                    expandedFilmIndices.add(index)
-                                                }
-                                            }
-                                    )
-                                }
-
-                                if (expandedFilmIndices.contains(index)) {
-                                    Text(
-                                        text = film.openingCrawl.replaceNewlinesWithSpace(),
-                                        style = MaterialTheme.typography.subtitle2,
-                                        color = MaterialTheme.colors.onBackground.copy(alpha = 0.8f),
-                                        modifier = Modifier.padding(top = 8.dp)
-                                    )
-                                }
-                            }
-                        }
-
-                    }
                 }
             }
+        }
 //        }
     }
 }

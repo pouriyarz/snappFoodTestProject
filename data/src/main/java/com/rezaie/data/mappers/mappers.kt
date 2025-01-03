@@ -18,20 +18,6 @@ import com.rezaie.domain.domainCharacteres.entity.PlanetEntity
 import com.rezaie.domain.domainCharacteres.entity.SpeciesEntity
 import kotlin.random.Random
 
-fun CharactersResponse.toCharacterEntity(): CharacterEntity {
-    return CharacterEntity(
-        id = id ?: url?.getIdFromUrl()?.toInt()
-        ?: Random.nextInt(),
-        name = name,
-        birthYear = birthYear,
-        height = height,
-        films = films,
-        species = species,
-        homeWorld = homeWorld,
-        url = url
-    )
-}
-
 fun FilmsResponse.toFilmEntity(): FilmsEntity {
     return FilmsEntity(
         id = id,
@@ -50,26 +36,6 @@ fun PlanetResponse.toPlanetEntity(): PlanetEntity {
 fun SpeciesResponse.toSpeciesEntity(): SpeciesEntity {
     return SpeciesEntity(
         id = id,
-        name = name,
-        language = language
-    )
-}
-
-fun FilmsResponse.toFilmsTable(): FilmTable {
-    return FilmTable(
-        name = name,
-        openingCrawl = openingCrawl
-    )
-}
-
-fun PlanetResponse.toPlanetTable(): PlanetTable {
-    return PlanetTable(
-        population = population
-    )
-}
-
-fun SpeciesResponse.toSpeciesTable(): SpeciesTable {
-    return SpeciesTable(
         name = name,
         language = language
     )
@@ -169,7 +135,7 @@ fun CharacterDetailEntity.toCharacterTable(): CharacterDetailTable {
         url = this.getUrl(),
         ),
         planet = getHomeWorld()?.toPlanetTable(),
-        species = getSpecies()?.map { it.toSpeciesTable() },
-        films = getFilms()?.map { it.toFilmTable() }
+        species = getSpecies().map { it.toSpeciesTable() },
+        films = getFilms().map { it.toFilmTable() }
     )
 }

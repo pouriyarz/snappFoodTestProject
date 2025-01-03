@@ -66,7 +66,7 @@ fun CharacterListItem(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data("${BuildConfig.BASE_URL_IMAGE}$imageId.jpg")
-                    .error(R.drawable.ic_baseline_star_24)
+                    .error(R.drawable.ic_star_wars)
                     .placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
                     .build(),
                 contentDescription = character.name,
