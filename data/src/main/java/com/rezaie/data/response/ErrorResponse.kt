@@ -5,10 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ErrorResponse(
-    @SerialName("error") val error: ErrorMessageResponse?
-)
-
-@Serializable
-data class ErrorMessageResponse(
-    @SerialName("message") val message: String?
+    @SerialName("detail") val error: String
 )

@@ -25,4 +25,10 @@ dependencies {
     implementation(libs.paging)
 
     implementation(projects.core)
+    implementation(projects.components)
+
+    //test
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutine.test)
+    testImplementation(libs.junit)
 }

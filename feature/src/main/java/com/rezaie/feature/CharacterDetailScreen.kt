@@ -49,7 +49,6 @@ import com.rezaie.components.extenssions.getIdFromUrl
 import com.rezaie.components.extenssions.replaceNewlinesWithSpace
 import com.rezaie.domain.domainCharacteres.base.getData
 import com.rezaie.feature.presentation.CharacterView
-import com.rezaie.feature.state.CharacterDetailEvents
 import com.rezaie.components.R as componentsR
 
 @Composable
@@ -66,12 +65,12 @@ fun CharacterDetailScreen(
     LaunchedEffect(hasError) {
         if (hasError && characterDetail.value?.films?.isEmpty() == true) {
             Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
-            viewModel.onTriggerEvent(CharacterDetailEvents.ClearError)
+            viewModel.clearError()
         }
     }
 
     LaunchedEffect(characterView) {
-        viewModel.onTriggerEvent(CharacterDetailEvents.GetCharacterDetail(characterView))
+       viewModel.getCharacterDetail(characterView)
     }
     BaseScreen {
         Surface(
@@ -86,21 +85,6 @@ fun CharacterDetailScreen(
                     .verticalScroll(rememberScrollState())
                     .fillMaxSize(),
             ) {
-
-//                if (characterDetail.value.isError() && characterDetail.value.getData()?.films?.isEmpty() == true) {
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                            .padding(16.dp),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(
-//                            text = "Error",
-//                            style = MaterialTheme.typography.h6,
-//                            color = MaterialTheme.colors.error
-//                        )
-//                    }
-//                } else {
 
                     // Image
                     val imageId = characterView.url?.getIdFromUrl()

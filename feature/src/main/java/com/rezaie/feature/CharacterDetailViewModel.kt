@@ -20,7 +20,6 @@ import com.rezaie.feature.mapper.toCharacterEntity
 import com.rezaie.feature.mapper.toCharacterView
 import com.rezaie.feature.presentation.CharacterDetailView
 import com.rezaie.feature.presentation.CharacterView
-import com.rezaie.feature.state.CharacterDetailEvents
 import com.rezaie.feature.state.CharacterListEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,7 +51,7 @@ constructor(
 
     private var characterDetailJob: Job? = null
 
-    private fun getCharacterDetail(characterView: CharacterView) {
+    fun getCharacterDetail(characterView: CharacterView) {
         characterDetailJob?.cancel()
         characterDetailJob = viewModelScope.launch {
             getCharacterDetailUseCase(characterView.toCharacterEntity()).collectLatest { resource ->
@@ -66,19 +65,7 @@ constructor(
         }
     }
 
-    private fun clearError() {
+    fun clearError() {
         _hasError.value = false
-    }
-
-    fun onTriggerEvent(event: CharacterDetailEvents) {
-        when (event) {
-            is CharacterDetailEvents.GetCharacterDetail -> {
-                getCharacterDetail(event.characterView)
-            }
-
-            CharacterDetailEvents.ClearError -> {
-                clearError()
-            }
-        }
     }
 }

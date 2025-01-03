@@ -19,7 +19,7 @@ internal fun <T> Response<T>.bodyOrThrow(json: Json): T {
 
 internal fun <T> Response<T>.parseError(json: Json): Exception {
     val errorResponse = errorBody()?.string()?.let { json.decodeFromString<ErrorResponse>(it) }
-    return SnappFoodException(errorResponse?.error?.message.orEmpty())
+    return SnappFoodException(errorResponse?.error.orEmpty())
 }
 
 inline fun <R, L, D> firstOfflineWithCacheFlowDB(

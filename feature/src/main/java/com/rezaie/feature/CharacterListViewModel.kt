@@ -54,7 +54,7 @@ constructor(
         setupSearch()
     }
 
-    private fun updateQuery(newQuery: String) {
+    fun updateQuery(newQuery: String) {
         _query.value = newQuery
     }
 
@@ -84,14 +84,6 @@ constructor(
                 .collect { pagingData ->
                     _characters.value = pagingData
                 }
-        }
-    }
-
-    fun onTriggerEvent(event: CharacterListEvents) {
-        when (event) {
-            is CharacterListEvents.UpdateQuery -> {
-                updateQuery(event.query)
-            }
         }
     }
 

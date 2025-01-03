@@ -32,6 +32,7 @@ import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.rezaie.components.extenssions.getIdFromUrl
+import com.rezaie.components.extenssions.orZero
 import com.rezaie.feature.BuildConfig
 import com.rezaie.feature.R
 import com.rezaie.feature.presentation.CharacterView
@@ -114,7 +115,7 @@ fun CharacterListItem(
                 // Number of Films
                 Text(
                     modifier = Modifier.padding(top = 5.dp),
-                    text = "${character.films?.size ?: 0} ${stringResource(componentsR.string.films)}",
+                    text = "${character.films?.size.orZero()} ${stringResource(componentsR.string.films)}",
                     style = MaterialTheme.typography.body2,
                     color = MaterialTheme.colors.onBackground.copy(alpha = 0.8f)
                 )

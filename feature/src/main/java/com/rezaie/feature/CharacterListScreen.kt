@@ -1,9 +1,6 @@
 package com.rezaie.feature
 
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -13,13 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,7 +31,6 @@ import coil.ImageLoader
 import com.rezaie.components.BaseScreen
 import com.rezaie.components.LoadingShimmerMovieItem
 import com.rezaie.feature.presentation.CharacterView
-import com.rezaie.feature.state.CharacterListEvents
 import com.rezaie.feature.ui.component.CharacterListItem
 import com.rezaie.feature.ui.component.CharacterListToolbar
 import com.rezaie.components.R as componentsR
@@ -58,7 +52,7 @@ fun CharacterListScreen(
     BackHandler(enabled = searchQuery.isNotEmpty()) {
         if (searchQuery.isNotEmpty()) {
             searchQuery = ""
-            viewModel.onTriggerEvent(CharacterListEvents.UpdateQuery(""))
+            viewModel.updateQuery("")
         }
     }
 
@@ -72,7 +66,7 @@ fun CharacterListScreen(
             ) {
                 CharacterListToolbar(onTextChange = { query ->
                     searchQuery = query
-                    viewModel.onTriggerEvent(CharacterListEvents.UpdateQuery(query))
+                    viewModel.updateQuery(query)
                 }, query = searchQuery)
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -89,7 +83,7 @@ fun CharacterListScreen(
                         }
 
                         characters.loadState.refresh is LoadState.Error &&
-                                characters.itemCount == 0 && characters.loadState.source.append.endOfPaginationReached-> {
+                                characters.itemCount == 0 && characters.loadState.source.append.endOfPaginationReached -> {
                             ErrorItem(
                                 onRetry = { characters.retry() }
                             )
@@ -154,7 +148,9 @@ fun ErrorItem(
     onRetry: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = stringResource(componentsR.string.error))

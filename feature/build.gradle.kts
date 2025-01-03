@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.common.android.plugin)
     alias(libs.plugins.common.hilt.plugin)
-    id(libs.plugins.navigation.safeArgs.get().pluginId)
     alias(libs.plugins.common.serialization.plugin)
 }
 
@@ -37,10 +36,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    //Navigation
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui)
-
     //project layers
     implementation(projects.domain.domainCharacteres)
     implementation(projects.domain.domainCore)
@@ -62,11 +57,9 @@ dependencies {
     androidTestImplementation(libs.compose.ui.testing)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
+    implementation(libs.compose.paging)
 
     //paging
     implementation(libs.paging)
-
-    implementation ("androidx.paging:paging-compose:1.0.0-alpha18")
-    implementation ("com.google.accompanist:accompanist-placeholder-material:0.36.0")
 
 }

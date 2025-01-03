@@ -30,19 +30,19 @@ dependencies {
 gradlePlugin {
     plugins {
         register("AndroidConfigPlugin") {
-            id = "rezaie.balad.commonAndroidConfigPlugin"
+            id = "rezaie.snappfood.commonAndroidConfigPlugin"
             implementationClass = "AndroidConfigPlugin"
         }
     }
     plugins {
         register("AndroidHiltConventionPlugin") {
-            id = "rezaie.balad.androidHiltConventionPlugin"
+            id = "rezaie.snappfood.androidHiltConventionPlugin"
             implementationClass = "AndroidHiltConventionPlugin"
         }
     }
     plugins {
         register("SnappFoodKotlinSerializationPlugin") {
-            id = "rezaie.balad.baladKotlinSerializationPlugin"
+            id = "rezaie.snappfood.snappFoodKotlinSerializationPlugin"
             implementationClass = "SnappFoodKotlinSerializationPlugin"
         }
     }

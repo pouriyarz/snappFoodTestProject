@@ -22,10 +22,9 @@ kotlin-serializable-convertor = "1.0.0"
 retrofit-version = "2.9.0"
 okHttp-version = "5.0.0-alpha.11"
 paging-version = "3.3.5"
-glide-version = "4.16.0"
 coroutine = "1.7.3"
-mockk-version = "1.13.9"
 room-version = "2.6.0-rc01"
+mockk-version = "1.13.9"
 coil = "2.5.0"
 activityCompose = "1.9.0"
 bom = "2024.05.00"
@@ -33,6 +32,7 @@ composeMaterial = "1.6.7"
 navigation = "2.7.7"
 androidxHiltNavigationCompose = "1.2.0"
 uiAndroid = "1.6.7"
+composePaging = "1.0.0-alpha18"
 
 
 [libraries]
@@ -66,16 +66,14 @@ compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material = { group = "androidx.compose.material", name = "material" , version.ref = "composeMaterial"}
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-testing = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+compose-paging = { group = "androidx.paging", name = "paging-compose", version.ref = "composePaging"}
 
 #navigation
-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav-version" }
-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "nav-version" }
 classPath-navigation-safeargs = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "nav-version" }
 
 #kotlinSerializable
@@ -89,14 +87,6 @@ okHttp-logger = { group = "com.squareup.okhttp3", name = "logging-interceptor", 
 
 #Paging
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging-version" }
-paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging-version" }
-
-glide-core = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide-version" }
-glide-compiler = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide-version" }
-
-#test
-coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine" }
-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk-version" }
 
 #room
 room-compiler = {group = "androidx.room", name ="room-compiler", version.ref = "room-version"}
@@ -104,6 +94,10 @@ room-paging= {group = "androidx.room", name ="room-paging", version.ref = "room-
 room-runtime = {group = "androidx.room", name ="room-runtime", version.ref = "room-version"}
 room-ktx = {group = "androidx.room", name ="room-ktx", version.ref = "room-version"}
 room-common = {group = "androidx.room", name ="room-common", version.ref = "room-version"}
+
+#test
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk-version" }
 
 #coil
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
@@ -118,12 +112,11 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-navigation-safeArgs = { id = "androidx.navigation.safeargs.kotlin", version = "unspecified" }
 
 #CustomPlugins
-common-android-plugin = { id = "rezaie.balad.commonAndroidConfigPlugin", version = "unspecified" }
-common-hilt-plugin = { id = "rezaie.balad.androidHiltConventionPlugin", version = "unspecified" }
-common-serialization-plugin = { id = "rezaie.balad.baladKotlinSerializationPlugin", version = "unspecified" }
+common-android-plugin = { id = "rezaie.snappfood.commonAndroidConfigPlugin", version = "unspecified" }
+common-hilt-plugin = { id = "rezaie.snappfood.androidHiltConventionPlugin", version = "unspecified" }
+common-serialization-plugin = { id = "rezaie.snappfood.snappFoodKotlinSerializationPlugin", version = "unspecified" }
 
 [bundles]
 compose = [
