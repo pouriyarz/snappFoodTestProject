@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.rezaie.data.api.local.db.entity.CharacterDetailTable
-import com.rezaie.data.api.local.db.entity.CharacterDetailWithRelations
 import com.rezaie.data.api.local.db.entity.CharacterTable
 import com.rezaie.data.api.local.db.entity.FilmTable
 import com.rezaie.data.api.local.db.entity.PlanetTable

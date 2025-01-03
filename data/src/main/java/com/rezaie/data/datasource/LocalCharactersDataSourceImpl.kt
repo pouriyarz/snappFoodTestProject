@@ -2,7 +2,6 @@ package com.rezaie.data.datasource
 
 import androidx.paging.PagingSource
 import com.rezaie.data.api.local.db.entity.CharacterDetailTable
-import com.rezaie.data.api.local.db.entity.CharacterDetailWithRelations
 import com.rezaie.data.api.local.db.entity.CharacterTable
 import com.rezaie.data.api.local.db.entity.FilmTable
 import com.rezaie.data.api.local.db.entity.PlanetTable
