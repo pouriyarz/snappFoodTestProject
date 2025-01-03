@@ -35,9 +35,9 @@ The application follows a combination of **MVVM (Model-View-ViewModel)** and **C
 4. **Components Layer:**
    - The Components Layer provides reusable UI components and helper extensions to enhance code reusability and UI consistency across the app.
    - This layer includes:
-   -- Base Screen: A common base screen template for setting up screens consistently.
-   -- Shimmer Item: A shimmer effect UI component used for loading states to enhance user experience.
-   -- Extensions: Various helper extensions for common tasks like working with Strings and Ints.
+      - Base Screen: A common base screen template for setting up screens consistently.
+     - Shimmer Item: A shimmer effect UI component used for loading states to enhance user experience.
+     - Extensions: Various helper extensions for common tasks like working with Strings and Ints.
 
 ## Features
 
