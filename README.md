@@ -21,7 +21,7 @@ The app leverages the following technologies:
 
 The application follows a combination of **MVVM (Model-View-ViewModel)** and **Clean Architecture** patterns to ensure maintainability and scalability. Here’s an overview of the architecture:
 
-1. **Presentation Layer:**
+1. **Feature Layer:**
     - Implemented using Jetpack Compose for building a modern, reactive UI.
     - ViewModels (using Hilt for dependency injection) manage the state and business logic.
 
@@ -31,6 +31,13 @@ The application follows a combination of **MVVM (Model-View-ViewModel)** and **C
 3. **Data Layer:**
     - Utilizes Room for local database management, with normalized tables and relationships handled using foreign keys.
     - Retrofit is used for making network requests.
+
+4. **Components Layer:**
+   - The Components Layer provides reusable UI components and helper extensions to enhance code reusability and UI consistency across the app.
+   - This layer includes:
+   -- Base Screen: A common base screen template for setting up screens consistently.
+   -- Shimmer Item: A shimmer effect UI component used for loading states to enhance user experience.
+   -- Extensions: Various helper extensions for common tasks like working with Strings and Ints.
 
 ## Features
 
