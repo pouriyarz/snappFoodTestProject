@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingShimmerMovieItem(
+fun LoadingShimmerCharacterItem(
     imageHeight: Dp,
     padding: Dp = 16.dp,
 ) {
@@ -59,7 +59,7 @@ fun LoadingShimmerMovieItem(
             Color.LightGray.copy(alpha = .9f),
         )
 
-        ShimmerMovieItem(
+        ShimmerCharacterItem(
             colors = colors,
             xShimmer = xCardShimmer.value,
             yShimmer = yCardShimmer.value,

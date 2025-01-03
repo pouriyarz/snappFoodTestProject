@@ -29,7 +29,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.ImageLoader
 import com.rezaie.components.BaseScreen
-import com.rezaie.components.LoadingShimmerMovieItem
+import com.rezaie.components.LoadingShimmerCharacterItem
 import com.rezaie.feature.presentation.CharacterView
 import com.rezaie.feature.ui.component.CharacterListItem
 import com.rezaie.feature.ui.component.CharacterListToolbar
@@ -77,7 +77,7 @@ fun CharacterListScreen(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(20) {
-                                    LoadingShimmerMovieItem(imageHeight = 130.dp)
+                                    LoadingShimmerCharacterItem(imageHeight = 130.dp)
                                 }
                             }
                         }
