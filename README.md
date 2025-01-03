@@ -62,7 +62,7 @@ I have written unit tests for the use cases, ensuring that the business logic of
 Unit tests are implemented using JUnit, MockK, and Kotlin Coroutines. The key use cases like GetCharactersUseCase and GetCharacterDetailUseCase are tested in isolation using mocks for the repository layer.
 
 **Mocking Dependencies:** I use MockK to mock repository interactions and test the behavior of the use cases.
-**Test Coverage:**I have written tests to check for the following scenarios:
+**Test Coverage:** I have written tests to check for the following scenarios:
 **Success:** Verifying that the use case returns the expected data when the repository succeeds.
 **Error Handling:** Verifying that the use case correctly handles errors when the repository fails.
 **Loading States:** Ensuring the correct loading states are emitted during data fetching.
