@@ -69,19 +69,11 @@ Unit tests are implemented using JUnit, MockK, and Kotlin Coroutines. The key us
 
 **Error Handling:** Verifying that the use case correctly handles errors when the repository fails.
 
-**Loading States:** Ensuring the correct loading states are emitted during data fetching.
-
 ## Lessons Learned
 
 - Designing normalized database schemas with Room improves scalability and ensures better data handling.
 - Async tasks for detailed data retrieval enhance performance but require careful state management to avoid inconsistencies.
 - Building UI with Jetpack Compose significantly simplifies the development process while allowing modern design principles.
-
-## Future Improvements
-
-- Implement additional UI/UX enhancements to further refine the user experience.
-- Add unit tests to ensure robustness and reliability.
-- Optimize performance for large datasets and high concurrency scenarios.
 
 
 
