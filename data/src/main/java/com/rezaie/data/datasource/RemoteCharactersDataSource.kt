@@ -8,6 +8,7 @@ import com.rezaie.data.response.SpeciesResponse
 import com.rezaie.domain.domainCharacteres.entity.CharacterDetailEntity
 import com.rezaie.domain.domainCharacteres.entity.CharacterEntity
 import com.rezaie.domain.domainCharacteres.entity.FilmsEntity
+import com.rezaie.domain.domainCharacteres.entity.SpeciesEntity
 
 
 interface RemoteCharactersDataSource {
@@ -24,9 +25,7 @@ interface RemoteCharactersDataSource {
         id: String
     ): PlanetResponse
 
-    suspend fun getSpecies(
-        id: String
-    ): SpeciesResponse
+    suspend fun getSpecies(species: List<String>?): List<SpeciesEntity>
 
     suspend fun fetchCharacterDetailsFromApi(characterEntity: CharacterEntity): CharacterDetailEntity
 }

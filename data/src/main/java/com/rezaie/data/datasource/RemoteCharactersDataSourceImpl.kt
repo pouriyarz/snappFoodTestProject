@@ -56,23 +56,31 @@ class RemoteCharactersDataSourceImpl @Inject constructor(
         return remoteService.getPlanet(id).bodyOrThrow(json)
     }
 
-    override suspend fun getSpecies(id: String): SpeciesResponse {
-        return remoteService.getSpecies(id).bodyOrThrow(json)
+    override suspend fun getSpecies(species: List<String>?): List<SpeciesEntity> {
+        return withContext(dispatcher) {
+            if (species.isNullOrEmpty()) return@withContext emptyList()
+
+            val speciesDeferreds = species.map { speciesUrl ->
+                val id = speciesUrl.getIdFromUrl()
+                async {
+                    remoteService.getSpecies(id).bodyOrThrow(json)
+                }
+            }
+            val speciesResponses = speciesDeferreds.awaitAll()
+
+            return@withContext speciesResponses.map { it.toSpeciesEntity() }
+        }
     }
 
     override suspend fun fetchCharacterDetailsFromApi(characterEntity: CharacterEntity): CharacterDetailEntity =
         withContext(dispatcher) {
-            val characterId = characterEntity.getId().toString()
-
             val filmsDeferred = async { getFilms(characterEntity.getFilms()) }  // Pass film URLs directly
-            val planetsDeferred = async { getPlanets(characterId) }
-            val speciesDeferred = async { getSpecies(characterId) }
+            val planetsDeferred = async { getPlanets(characterEntity.getHomeWorld().getIdFromUrl()) }
+            val speciesDeferred = async { getSpecies(characterEntity.getSpecies()) }
 
             val filmsResponse = filmsDeferred.await()
             val planetsResponse = planetsDeferred.await()
             val speciesResponse = speciesDeferred.await()
-
-            val speciesEntities = listOf(speciesResponse.toSpeciesEntity())
             val planetEntity = planetsResponse.toPlanetEntity()
 
             return@withContext CharacterDetailEntity(
@@ -80,7 +88,7 @@ class RemoteCharactersDataSourceImpl @Inject constructor(
                 name = characterEntity.getName(),
                 birthYear = characterEntity.getBirthYear(),
                 height = characterEntity.getHeight(),
-                species = speciesEntities,
+                species = speciesResponse,
                 homeWorld = planetEntity,
                 films = filmsResponse,
                 url = characterEntity.getUrl()
